@@ -1,4 +1,5 @@
 const Clutter = imports.gi.Clutter;
+const Gtk = imports.gi.Gtk;
 const St = imports.gi.St;
 const Lang = imports.lang;
 
@@ -9,17 +10,18 @@ const ModalDialog = imports.ui. modalDialog;
 const EXTENSION_UUID = 'gTile@shuairan';
 const gTile = ExtensionSystem.extensionStateObjs[EXTENSION_UUID];
 
-function MyApplet(orientation, panelHeight) {
-    this._init(orientation, panelHeight);
+function MyApplet(metadata, orientation, panelHeight) {
+    this._init(metadata, orientation, panelHeight);
 }
 
 MyApplet.prototype = {
     __proto__: Applet.IconApplet.prototype,
 
-    _init: function(orientation, panelHeight){
+    _init: function(metadata, orientation, panelHeight){
         Applet.IconApplet.prototype._init.call(this, orientation, panelHeight);
+        Gtk.IconTheme.get_default().append_search_path(metadata.path);
 
-        this.set_applet_icon_name('tiling-icon');
+        this.set_applet_icon_symbolic_name('tiling-icon');
         this.set_applet_tooltip(_("Launch GTile"));
 
         this.modal = new ModalDialog.ModalDialog();
@@ -54,6 +56,6 @@ MyApplet.prototype = {
 };
 
 function main(metadata, orientation, panelHeight){
-    let myApplet = new MyApplet(orientation, panelHeight);
+    let myApplet = new MyApplet(metadata, orientation, panelHeight);
     return myApplet;
 }
