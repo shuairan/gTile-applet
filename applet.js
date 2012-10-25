@@ -28,15 +28,15 @@ MyApplet.prototype = {
         this.modal.setButtons([{ label: _("Cancel"),
                                  action: Lang.bind(this, this._closeDialog),
                                  key: Clutter.Escape}]);
-        this.notInstalledLabel = new St.Label({text: _("gTile is not installed. Please enable it in order to use the applet\n")});
-        this.notEnabledLabel = new St.Label({text: _("gTile is not enabled. Please enable it in order to use the applet\n")});
+        this.notInstalledLabel = new St.Label({text: _("gTile is not installed or incompatible with Cinnamon verision.\nPlease install/update it in order to use the applet\n")});
+        this.notEnabledLabel = new St.Label({text: _("gTile is not enabled.\nPlease enable it in order to use the applet\n")});
         this.modal.contentLayout.add(this.notInstalledLabel);
         this.modal.contentLayout.add(this.notEnabledLabel);
     },
 
     on_applet_clicked: function(){
         if (!gTile){
-            global.log("gTile applet clicked while gTile is not installed");
+            global.log("gTile applet clicked while gTile is not installed/incompatible with Cinnamon version");
             this.modal.open();
             this.notInstalledLabel.show();
             this.notEnabledLabel.hide();
