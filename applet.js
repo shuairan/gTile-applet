@@ -5,10 +5,11 @@ const Lang = imports.lang;
 
 const Applet = imports.ui.applet;
 const ExtensionSystem = imports.ui.extensionSystem;
+const extensions = imports.ui.extension.objects;
 const ModalDialog = imports.ui. modalDialog;
 
 const EXTENSION_UUID = 'gTile@shuairan';
-const gTile = ExtensionSystem.extensionStateObjs[EXTENSION_UUID];
+const gTile = extensions[EXTENSION_UUID];
 
 function MyApplet(metadata, orientation, panelHeight) {
     this._init(metadata, orientation, panelHeight);
@@ -17,8 +18,9 @@ function MyApplet(metadata, orientation, panelHeight) {
 MyApplet.prototype = {
     __proto__: Applet.IconApplet.prototype,
 
-    _init: function(metadata, orientation, panelHeight){
-        Applet.IconApplet.prototype._init.call(this, orientation, panelHeight);
+    _init: function(metadata, orientation, panelHeight, instanceId){
+        global.log("HELLO!");
+        Applet.IconApplet.prototype._init.call(this, orientation, panelHeight, instanceId);
         Gtk.IconTheme.get_default().append_search_path(metadata.path);
 
         this.set_applet_icon_symbolic_name('tiling-icon');
@@ -46,7 +48,7 @@ MyApplet.prototype = {
             this.notInstalledLabel.hide();
             this.notEnabledLabel.show();
         } else {
-            gTile.toggleTiling();
+            gTile.module.toggleTiling();
         }
     },
 
@@ -55,7 +57,7 @@ MyApplet.prototype = {
     }
 };
 
-function main(metadata, orientation, panelHeight){
-    let myApplet = new MyApplet(metadata, orientation, panelHeight);
+function main(metadata, orientation, panelHeight, instanceId){
+    let myApplet = new MyApplet(metadata, orientation, panelHeight, instanceId);
     return myApplet;
 }
